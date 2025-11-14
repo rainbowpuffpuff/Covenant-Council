@@ -4,7 +4,7 @@ import { principles } from '@/lib/covenant';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, PenSquare } from 'lucide-react';
+import { ArrowRight, PenSquare, Share2 } from 'lucide-react';
 import Header from '@/components/app/header';
 
 export default function Home() {
@@ -33,6 +33,11 @@ export default function Home() {
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="secondary">
+                    <Link href="/covenant-explorer">
+                      Explore the Covenant <Share2 className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline">
                     <a href="https://manifest.human.tech/manifesto" target="_blank" rel="noopener noreferrer">
                       Sign the Manifesto <PenSquare className="ml-2 h-4 w-4" />
                     </a>
@@ -56,7 +61,7 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">The Principles</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                <p className="max-w-[900px] text-foreground/80 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   To unify collective alignment efforts, we enter into a Covenant of Humanistic Technologies, grounded in principles we hold self-evident.
                 </p>
               </div>

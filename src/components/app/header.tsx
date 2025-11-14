@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, Share2 } from 'lucide-react';
 
 export default function Header() {
   return (
@@ -14,6 +14,12 @@ export default function Header() {
           className="text-sm font-medium hover:underline underline-offset-4"
         >
           Principles
+        </Link>
+        <Link
+          href="/covenant-explorer"
+          className="text-sm font-medium hover:underline underline-offset-4"
+        >
+          Explorer
         </Link>
         <Link
           href="/council"
