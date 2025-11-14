@@ -21,7 +21,7 @@ export default function CovenantExplorerPage() {
                 <Share2 className="h-8 w-8 text-primary" />
                 <span>Explore the Covenant</span>
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-foreground/80">
                 This visualization shows how the 10 Covenant principles relate
                 to five core dimensions. Hover over the chart to see how each
                 principle scores.
