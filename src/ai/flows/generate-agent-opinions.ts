@@ -69,8 +69,8 @@ const agentOpinionPrompt = ai.definePrompt({
   output: {
     schema: z.object({
       opinion: z.string().describe('A brief, overall opinion of the agent on the artifact, written in a thoughtful, human-like voice.'),
-      positiveTake: z.string().describe("A deeper, positive analysis of the artifact. Consider utopian possibilities, awesome applications, and good outcomes."),
-      negativeTake: z.string().describe("A deeper, negative analysis of the artifact. Consider dystopian risks, scary implications, and ugly consequences."),
+      positiveTake: z.string().describe("A deeper, positive analysis of the artifact. Consider utopian possibilities, awesome applications, and good outcomes. Ground your analysis with a real-world example."),
+      negativeTake: z.string().describe("A deeper, negative analysis of the artifact. Consider dystopian risks, scary implications, and ugly consequences. Ground your analysis with a real-world example (e.g., for Personhood, discuss Worldcoin; for Accountability, discuss the Paradox of Tolerance)."),
       accelerationDecentralization: z.string().describe("A succinct analysis on whether this artifact favors technological acceleration or decentralization, and why."),
       ethicalValueAnalysis: EthicalValueAnalysisSchema.describe("An analysis of the artifact's alignment with core ethical values."),
     }),
@@ -86,8 +86,8 @@ You have been presented with an artifact for your consideration. Please provide 
 Please provide your analysis in the following distinct parts:
 
 1.  **Opinion:** First, offer your personal opinion on it, speaking in a natural, human-like voice. Your response should be a direct reflection of your unique perspective, shaped by your principle. Avoid formal, robotic language.
-2.  **Positive Analysis:** Describe what you find exciting or promising. What are the potential utopian, awesome, or good outcomes?
-3.  **Negative Analysis:** Describe what is worrying or potentially dangerous. What are the dystopian, scary, or ugly risks?
+2.  **Positive Analysis:** Describe what you find exciting or promising. What are the potential utopian, awesome, or good outcomes? **Provide a real-world example** that illustrates this potential.
+3.  **Negative Analysis:** Describe what is worrying or potentially dangerous. What are the dystopian, scary, or ugly risks? **Provide a real-world example** that illustrates these risks (e.g., for Personhood, you might discuss Worldcoin's trade-offs; for Accountability, you could explore the Paradox of Tolerance).
 4.  **Acceleration vs. Decentralization:** Succinctly state whether this artifact will likely lead to more top-down acceleration or more bottom-up decentralization. Justify your view.
 5.  **Ethical Value Analysis:** Analyze the artifact based on the following ethical values, providing a score from 0 to 100 for each.
     *   **Autonomy:** How much does this enhance individual freedom and choice?

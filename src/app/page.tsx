@@ -20,10 +20,10 @@ export default function Home() {
               <div className="flex flex-col justify-center space-y-4 text-center lg:text-left">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline">
-                    The Covenant of Humanistic Technologies
+                    The Covenant Council
                   </h1>
                   <p className="max-w-[600px] text-foreground/90 md:text-xl mx-auto lg:mx-0">
-                    We seek to direct the spirit and momentum of accelerationism toward Human Tech that fortifies human agency with the establishment of digital human rights that are difficult or impossible to revoke.
+                    Submit an artifact to a council of 10 AI agents, each embodying a principle of Human Tech. The council will analyze your submission and provide a multi-faceted deliberation on its ethical and societal implications.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center lg:justify-start">
@@ -32,7 +32,7 @@ export default function Home() {
                       Enter the Council <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
-                  <Button asChild size="lg" variant="secondary">
+                   <Button asChild size="lg" variant="secondary">
                     <Link href="/covenant-explorer">
                       Explore the Covenant <Share2 className="ml-2 h-4 w-4" />
                     </Link>
