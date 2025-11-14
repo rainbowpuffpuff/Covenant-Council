@@ -22,7 +22,7 @@ export default function Home() {
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline">
                     The Covenant of Humanistic Technologies
                   </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                  <p className="max-w-[600px] text-foreground/90 md:text-xl">
                     We seek to direct the spirit and momentum of accelerationism toward Human Tech that fortifies human agency with the establishment of digital human rights that are difficult or impossible to revoke.
                   </p>
                 </div>
