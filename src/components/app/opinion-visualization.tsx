@@ -15,8 +15,8 @@ export function OpinionVisualization({ analysis }: OpinionVisualizationProps) {
   const chartData = React.useMemo(() => {
     return analysis.opinions.map(opinion => ({
         principle: opinion.principle,
-        score: opinion.alignmentScore ?? Math.floor(Math.random() * 31) + 10, // 10-40
-        isEstimate: opinion.alignmentScore === undefined,
+        score: opinion.alignmentScore,
+        isEstimate: false, // Scores are now always provided
     }));
   }, [analysis]);
 
@@ -33,19 +33,13 @@ export function OpinionVisualization({ analysis }: OpinionVisualizationProps) {
                 const principleDetails = principles.find(p => p.title === opinion.principle);
                 if (!principleDetails) return null;
 
-                const alignmentData = chartData.find(d => d.principle === opinion.principle);
-
                 return (
                     <OpinionCard
                         key={index}
                         principle={principleDetails}
-                        opinion={opinion.opinion}
-                        positiveTake={opinion.positiveTake}
-                        negativeTake={opinion.negativeTake}
-                        accelerationDecentralization={opinion.accelerationDecentralization}
-                        alignmentScore={alignmentData?.score}
-                        isEstimate={alignmentData?.isEstimate ?? true}
-                        ethicalValueAnalysis={opinion.ethicalValueAnalysis}
+                        rationale={opinion.rationale}
+                        constructiveFeedback={opinion.constructiveFeedback}
+                        alignmentScore={opinion.alignmentScore}
                     />
                 );
             })}
