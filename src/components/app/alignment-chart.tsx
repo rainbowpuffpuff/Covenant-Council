@@ -33,6 +33,9 @@ const chartConfig = {
 
 export function AlignmentChart({ data }: AlignmentChartProps) {
   const formattedData = React.useMemo(() => {
+    // Find the max score to normalize the data for the chart's domain.
+    const maxScore = Math.max(...data.map(d => d.score), 0);
+
     return principles.map(p => {
         const matchingData = data.find(d => d.principle === p.title);
         const score = matchingData?.score ?? 0;
@@ -42,6 +45,7 @@ export function AlignmentChart({ data }: AlignmentChartProps) {
             principle: p.shortTitle,
             score: !isEstimate ? score : 0,
             estimatedScore: isEstimate ? score : 0,
+            fullMark: maxScore > 0 ? 100 : 0, // Used to set the chart domain
         };
     });
   }, [data]);
@@ -52,6 +56,7 @@ export function AlignmentChart({ data }: AlignmentChartProps) {
         data={formattedData}
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
         outerRadius="80%"
+        domainMax={100}
       >
         <ChartTooltip
           cursor={false}

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { Loader2, Send, Wand2, Bot, FileText, Upload } from 'lucide-react';
+import { Loader2, Send, Wand2, Bot, FileText, Upload, History } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -16,6 +16,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Header from '@/components/app/header';
 import { processArtifact, type FormState } from './actions';
 import { OpinionVisualization } from '@/components/app/opinion-visualization';
+import { GenerateAgentOpinionsOutput } from '@/ai/flows/generate-agent-opinions';
+import { SubmissionHistory } from '@/components/app/submission-history';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -47,6 +49,7 @@ export default function CouncilPage() {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   const [activeTab, setActiveTab] = useState("text");
+  const [submissionHistory, setSubmissionHistory] = useState<GenerateAgentOpinionsOutput[]>([]);
 
   useEffect(() => {
     if (state.error) {
@@ -61,9 +64,10 @@ export default function CouncilPage() {
   useEffect(() => {
     if (state.opinions) {
         formRef.current?.reset();
-        // Also reset the active tab if you want to.
-        // setActiveTab("text");
+        setActiveTab("text");
+        setSubmissionHistory(prevHistory => [...prevHistory, state.opinions!]);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.opinions, state.timestamp]);
 
 
@@ -71,8 +75,8 @@ export default function CouncilPage() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <main className="flex-1 p-4 md:p-8">
-        <div className="grid gap-8 md:grid-cols-2 max-w-7xl mx-auto">
-          <Card className="md:col-span-2">
+        <div className="grid gap-8 max-w-7xl mx-auto">
+          <Card>
              <CardHeader>
                 <CardTitle className="font-headline text-3xl flex items-center gap-2">
                     <Wand2 className="h-8 w-8 text-primary"/>
@@ -106,7 +110,7 @@ export default function CouncilPage() {
             </CardContent>
           </Card>
 
-          <Card className="md:col-span-2">
+          <Card>
             <CardHeader>
                 <CardTitle className="font-headline text-3xl flex items-center gap-2">
                     <Bot className="h-8 w-8 text-primary"/>
@@ -120,6 +124,24 @@ export default function CouncilPage() {
                 <RenderResults />
             </CardContent>
           </Card>
+          
+          {submissionHistory.length > 1 && (
+             <Card>
+                <CardHeader>
+                    <CardTitle className="font-headline text-3xl flex items-center gap-2">
+                        <History className="h-8 w-8 text-primary"/>
+                        <span>Submission History</span>
+                    </CardTitle>
+                    <CardDescription>
+                        Review the analyses of your previous submissions in this session.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <SubmissionHistory history={submissionHistory.slice(0, -1)} />
+                </CardContent>
+            </Card>
+          )}
+
         </div>
       </main>
     </div>
@@ -127,6 +149,7 @@ export default function CouncilPage() {
 
   function RenderResults() {
     const { pending } = useFormStatus();
+    const latestResult = state.opinions;
 
     if (pending) {
         return (
@@ -143,8 +166,8 @@ export default function CouncilPage() {
         )
     }
 
-    if (state.opinions) {
-        return <OpinionVisualization analysis={state.opinions} />;
+    if (latestResult) {
+        return <OpinionVisualization analysis={latestResult} />;
     }
 
     return (
