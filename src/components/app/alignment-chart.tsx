@@ -47,10 +47,11 @@ export function AlignmentChart({ data }: AlignmentChartProps) {
   }, [data]);
 
   return (
-    <ChartContainer config={chartConfig} className="mx-auto aspect-square h-full max-h-[400px]">
+    <ChartContainer config={chartConfig} className="mx-auto aspect-square h-full max-h-[450px]">
       <RadarChart
         data={formattedData}
         margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        outerRadius="80%"
       >
         <ChartTooltip
           cursor={false}
