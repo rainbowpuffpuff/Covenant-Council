@@ -39,10 +39,10 @@ const artifactSchema = z.object({
     }
     
     if (hasText) {
-        if (data.text!.length < 10 || data.text!.length > 10000) {
+        if (data.text!.length < 10 || data.text!.length > 20000) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                message: "Artifact text must be between 10 and 10000 characters long.",
+                message: "Artifact text must be between 10 and 20000 characters long.",
                 path: ['text'],
             });
         }
