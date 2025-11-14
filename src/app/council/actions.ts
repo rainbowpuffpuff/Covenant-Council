@@ -67,7 +67,10 @@ export async function processArtifact(
   const artifactText = formData.get('artifact') as string | null;
   const artifactFile = formData.get('artifactFile') as File | null;
 
-  const validatedArtifact = artifactSchema.safeParse({ text: artifactText, file: artifactFile });
+  const validatedArtifact = artifactSchema.safeParse({ 
+    text: artifactFile && artifactFile.size > 0 ? '' : artifactText, 
+    file: artifactFile 
+  });
 
   if (!validatedArtifact.success) {
     const error = validatedArtifact.error.errors[0];
@@ -80,7 +83,7 @@ export async function processArtifact(
   
   try {
     let opinions;
-    if (validatedArtifact.data.file) {
+    if (validatedArtifact.data.file && validatedArtifact.data.file.size > 0) {
         const file = validatedArtifact.data.file;
         const buffer = await file.arrayBuffer();
         const dataUri = toDataURI(buffer, file.type);
