@@ -10,34 +10,43 @@ const artifactSchema = z.object({
   text: z.string().optional(),
   file: z.instanceof(File).optional(),
 })
-.refine(data => data.text || data.file, {
-  message: "Either text or a file must be provided.",
-})
-.refine(data => !(data.text && data.file), {
-    message: "Provide either text or a file, not both.",
-})
-.refine(data => {
-    if (!data.file) return true;
-    return data.file.size > 0;
-}, {
-    message: "File cannot be empty.",
-    path: ['file']
-})
-.refine(data => {
-    if (!data.file) return true;
-    return data.file.size <= MAX_FILE_SIZE_BYTES;
-}, {
-    message: `File size must be ${MAX_FILE_SIZE_MB}MB or less.`,
-    path: ['file']
-})
-.refine(data => {
-    if (data.text) {
-        return data.text.length >= 10 && data.text.length <= 5000;
+.superRefine((data, ctx) => {
+    const hasText = data.text && data.text.trim().length > 0;
+    const hasFile = data.file && data.file.size > 0;
+
+    if (!hasText && !hasFile) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Either text or a file must be provided.",
+        });
     }
-    return true;
-}, {
-    message: "Artifact text must be between 10 and 5000 characters long.",
-    path: ['text']
+
+    if (hasText && hasFile) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Provide either text or a file, not both.",
+        });
+    }
+
+    if (hasFile) {
+        if (data.file!.size > MAX_FILE_SIZE_BYTES) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `File size must be ${MAX_FILE_SIZE_MB}MB or less.`,
+                path: ['file'],
+            });
+        }
+    }
+    
+    if (hasText) {
+        if (data.text!.length < 10 || data.text!.length > 5000) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Artifact text must be between 10 and 5000 characters long.",
+                path: ['text'],
+            });
+        }
+    }
 });
 
 
@@ -68,8 +77,8 @@ export async function processArtifact(
   const artifactFile = formData.get('artifactFile') as File | null;
 
   const validatedArtifact = artifactSchema.safeParse({ 
-    text: artifactFile && artifactFile.size > 0 ? '' : artifactText, 
-    file: artifactFile 
+    text: artifactText ?? undefined, 
+    file: artifactFile ?? undefined 
   });
 
   if (!validatedArtifact.success) {
@@ -83,14 +92,16 @@ export async function processArtifact(
   
   try {
     let opinions;
-    if (validatedArtifact.data.file && validatedArtifact.data.file.size > 0) {
-        const file = validatedArtifact.data.file;
+    const { file, text } = validatedArtifact.data;
+
+    if (file && file.size > 0) {
         const buffer = await file.arrayBuffer();
         const dataUri = toDataURI(buffer, file.type);
         opinions = await generateAgentOpinions({ artifact: dataUri, mimeType: file.type });
-    } else if (validatedArtifact.data.text) {
-        opinions = await generateAgentOpinions({ artifact: validatedArtifact.data.text });
+    } else if (text) {
+        opinions = await generateAgentOpinions({ artifact: text });
     } else {
+        // This case should not be reached due to validation, but as a fallback:
         return {
             opinions: null,
             error: 'No artifact provided.',
