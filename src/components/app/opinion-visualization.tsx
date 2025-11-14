@@ -42,6 +42,7 @@ export function OpinionVisualization({ analysis }: OpinionVisualizationProps) {
                         opinion={opinion.opinion}
                         positiveTake={opinion.positiveTake}
                         negativeTake={opinion.negativeTake}
+                        accelerationDecentralization={opinion.accelerationDecentralization}
                         alignmentScore={alignmentData?.score}
                         isEstimate={alignmentData?.isEstimate ?? true}
                         ethicalValueAnalysis={opinion.ethicalValueAnalysis}

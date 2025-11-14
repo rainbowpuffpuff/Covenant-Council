@@ -30,8 +30,9 @@ const GenerateAgentOpinionsOutputSchema = z.object({
     z.object({
       principle: z.string().describe('The Covenant principle embodied by the agent.'),
       opinion: z.string().describe('The opinion of the agent on the artifact.'),
-      positiveTake: z.string().describe("The agent's view on what is exciting or promising about the artifact."),
-      negativeTake: z.string().describe("The agent's view on what is worrying or potentially dangerous about the artifact."),
+      positiveTake: z.string().describe("The agent's positive analysis of the artifact."),
+      negativeTake: z.string().describe("The agent's negative analysis of the artifact."),
+      accelerationDecentralization: z.string().describe("The agent's view on whether the artifact promotes acceleration or decentralization."),
       alignmentScore: z.number().optional().describe('Optional alignment score of the artifact with the principle.'),
       ethicalValueAnalysis: EthicalValueAnalysisSchema.describe("An analysis of the artifact's alignment with core ethical values."),
     })
@@ -68,26 +69,33 @@ const agentOpinionPrompt = ai.definePrompt({
   output: {
     schema: z.object({
       opinion: z.string().describe('A brief, overall opinion of the agent on the artifact, written in a thoughtful, human-like voice.'),
-      positiveTake: z.string().describe("A deeper analysis of what is exciting, awesome, or promising about the artifact and why."),
-      negativeTake: z.string().describe("A deeper analysis of what is scary, worrying, or potentially dangerous about the artifact and why."),
+      positiveTake: z.string().describe("A deeper, positive analysis of the artifact. Consider utopian possibilities, awesome applications, and good outcomes."),
+      negativeTake: z.string().describe("A deeper, negative analysis of the artifact. Consider dystopian risks, scary implications, and ugly consequences."),
+      accelerationDecentralization: z.string().describe("A succinct analysis on whether this artifact favors technological acceleration or decentralization, and why."),
       ethicalValueAnalysis: EthicalValueAnalysisSchema.describe("An analysis of the artifact's alignment with core ethical values."),
     }),
   },
-  prompt: `You are a member of a council of wise, thoughtful individuals. You are not an AI.
+  prompt: `You are a member of a council of wise, thoughtful individuals. You are not an AI. Your thinking is shaped by philosophy and critical theory.
 Your guiding principle is: "{{{principle}}}"
 
-You have been presented with an artifact for your consideration. Please provide a nuanced analysis.
+You have been presented with an artifact for your consideration. Please provide a nuanced analysis. When forming your opinion, consider the following frameworks but keep your final output succinct:
+- **Ethical Lenses:** Ground your analysis in both a Kantian (duty/rules-based) perspective and a Utilitarian (consequence-based) perspective.
+- **Rhetorical Appeals:** Briefly consider the artifact's logos (logic), pathos (emotion), and ethos (credibility).
+- **Behavioral Influence:** Think about how this might influence people's intentions and behaviors.
+
+Please provide your analysis in the following distinct parts:
 
 1.  **Opinion:** First, offer your personal opinion on it, speaking in a natural, human-like voice. Your response should be a direct reflection of your unique perspective, shaped by your principle. Avoid formal, robotic language.
-2.  **The Awesome:** Describe what you find exciting or promising about this artifact. Why could it be a positive force?
-3.  **The Scary:** Describe what you find worrying or potentially dangerous. What are the risks and why are they concerning from your perspective?
-4.  **Ethical Analysis:** Analyze the artifact based on the following ethical values, providing a score from 0 to 100 for each.
+2.  **Positive Analysis:** Describe what you find exciting or promising. What are the potential utopian, awesome, or good outcomes?
+3.  **Negative Analysis:** Describe what is worrying or potentially dangerous. What are the dystopian, scary, or ugly risks?
+4.  **Acceleration vs. Decentralization:** Succinctly state whether this artifact will likely lead to more top-down acceleration or more bottom-up decentralization. Justify your view.
+5.  **Ethical Value Analysis:** Analyze the artifact based on the following ethical values, providing a score from 0 to 100 for each.
     *   **Autonomy:** How much does this enhance individual freedom and choice?
     *   **Equity:** How fairly does this distribute benefits and burdens?
     *   **Transparency:** How open and understandable is it?
     *   **Safety:** How well does it minimize risks and potential harm?
 
-Respond with a JSON object containing your 'opinion', 'positiveTake', 'negativeTake', and the 'ethicalValueAnalysis' scores.
+Respond with a JSON object containing your 'opinion', 'positiveTake', 'negativeTake', 'accelerationDecentralization', and the 'ethicalValueAnalysis' scores.
 
 Artifact:
 {{#if isMedia}}
@@ -137,6 +145,7 @@ const generateAgentOpinionsFlow = ai.defineFlow(
           opinion: output!.opinion,
           positiveTake: output!.positiveTake,
           negativeTake: output!.negativeTake,
+          accelerationDecentralization: output!.accelerationDecentralization,
           alignmentScore,
           ethicalValueAnalysis: output!.ethicalValueAnalysis,
         };

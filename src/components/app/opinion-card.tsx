@@ -7,13 +7,14 @@ import { Progress } from '@/components/ui/progress';
 import { type Principle } from '@/lib/covenant';
 import { type EthicalValueAnalysis } from '@/ai/flows/generate-agent-opinions';
 import { cn } from '@/lib/utils';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Zap, GitFork } from 'lucide-react';
 
 interface OpinionCardProps {
   principle: Principle;
   opinion: string;
   positiveTake: string;
   negativeTake: string;
+  accelerationDecentralization: string;
   alignmentScore?: number;
   isEstimate: boolean;
   ethicalValueAnalysis: EthicalValueAnalysis;
@@ -31,6 +32,7 @@ export function OpinionCard({
   opinion,
   positiveTake,
   negativeTake,
+  accelerationDecentralization,
   alignmentScore = 0,
   isEstimate,
   ethicalValueAnalysis,
@@ -54,13 +56,24 @@ export function OpinionCard({
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div className="rounded-lg border p-4">
-                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsUp className="h-5 w-5 text-green-500"/> The Awesome</h4>
+                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsUp className="h-5 w-5 text-green-500"/> Positive Analysis</h4>
                 <p>{positiveTake}</p>
             </div>
             <div className="rounded-lg border p-4">
-                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsDown className="h-5 w-5 text-red-500"/> The Scary</h4>
+                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsDown className="h-5 w-5 text-red-500"/> Negative Analysis</h4>
                 <p>{negativeTake}</p>
             </div>
+        </div>
+
+        <div className="rounded-lg border p-4 mt-4">
+            <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                {accelerationDecentralization.toLowerCase().includes('decentral') ? 
+                    <GitFork className="h-5 w-5 text-blue-500"/> :
+                    <Zap className="h-5 w-5 text-orange-500"/>
+                }
+                Acceleration vs. Decentralization
+            </h4>
+            <p>{accelerationDecentralization}</p>
         </div>
         
         {isEstimate && <p className="text-xs italic mt-4">Principle alignment score is an estimate.</p>}
