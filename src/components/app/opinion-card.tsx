@@ -6,10 +6,14 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { type Principle } from '@/lib/covenant';
 import { type EthicalValueAnalysis } from '@/ai/flows/generate-agent-opinions';
+import { cn } from '@/lib/utils';
+import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
 interface OpinionCardProps {
   principle: Principle;
   opinion: string;
+  positiveTake: string;
+  negativeTake: string;
   alignmentScore?: number;
   isEstimate: boolean;
   ethicalValueAnalysis: EthicalValueAnalysis;
@@ -25,10 +29,14 @@ const ethicalValueLabels: { key: keyof EthicalValueAnalysis, label: string }[] =
 export function OpinionCard({
   principle,
   opinion,
+  positiveTake,
+  negativeTake,
   alignmentScore = 0,
   isEstimate,
   ethicalValueAnalysis,
 }: OpinionCardProps) {
+  const scoreColorClass = alignmentScore > 66 ? 'bg-green-500' : alignmentScore > 33 ? 'bg-yellow-500' : 'bg-red-500';
+
   return (
     <AccordionItem value={`item-${principle.id}`}>
       <AccordionTrigger>
@@ -37,13 +45,25 @@ export function OpinionCard({
           <span className="font-semibold text-left">{principle.shortTitle}</span>
           <div className="flex-1 flex items-center gap-2 justify-end">
             <span className={`text-sm font-mono ${isEstimate ? 'text-muted-foreground' : ''}`}>{alignmentScore}%</span>
-            <Progress value={alignmentScore} className="w-24 h-2" />
+            <Progress value={alignmentScore} className="w-24 h-2" indicatorClassName={scoreColorClass} />
           </div>
         </div>
       </AccordionTrigger>
       <AccordionContent className="prose prose-sm dark:prose-invert max-w-none px-2 text-foreground/80">
-        <p>{opinion}</p>
-        {isEstimate && <p className="text-xs italic mt-2">Principle alignment score is an estimate.</p>}
+        <p className="italic">"{opinion}"</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className="rounded-lg border p-4">
+                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsUp className="h-5 w-5 text-green-500"/> The Awesome</h4>
+                <p>{positiveTake}</p>
+            </div>
+            <div className="rounded-lg border p-4">
+                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsDown className="h-5 w-5 text-red-500"/> The Scary</h4>
+                <p>{negativeTake}</p>
+            </div>
+        </div>
+        
+        {isEstimate && <p className="text-xs italic mt-4">Principle alignment score is an estimate.</p>}
 
         <div className="mt-4 pt-4 border-t">
             <h4 className="font-semibold text-foreground mb-2">Ethical Value Analysis</h4>

@@ -40,6 +40,8 @@ export function OpinionVisualization({ analysis }: OpinionVisualizationProps) {
                         key={index}
                         principle={principleDetails}
                         opinion={opinion.opinion}
+                        positiveTake={opinion.positiveTake}
+                        negativeTake={opinion.negativeTake}
                         alignmentScore={alignmentData?.score}
                         isEstimate={alignmentData?.isEstimate ?? true}
                         ethicalValueAnalysis={opinion.ethicalValueAnalysis}
