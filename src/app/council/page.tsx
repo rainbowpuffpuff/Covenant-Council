@@ -1,14 +1,17 @@
 'use client';
 
-import { useEffect, useRef, useActionState } from 'react';
+import { useEffect, useRef, useState, useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { Loader2, Send, Wand2, Bot } from 'lucide-react';
+import { Loader2, Send, Wand2, Bot, FileText, Upload } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 
 import Header from '@/components/app/header';
 import { processArtifact, type FormState } from './actions';
@@ -43,7 +46,8 @@ export default function CouncilPage() {
   const [state, formAction] = useActionState(processArtifact, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
-  
+  const [activeTab, setActiveTab] = useState("text");
+
   useEffect(() => {
     if (state.error) {
       toast({
@@ -57,6 +61,8 @@ export default function CouncilPage() {
   useEffect(() => {
     if (state.opinions) {
         formRef.current?.reset();
+        // Also reset the active tab if you want to.
+        // setActiveTab("text");
     }
   }, [state.opinions, state.timestamp]);
 
@@ -73,19 +79,30 @@ export default function CouncilPage() {
                     <span>Submit your Artifact</span>
                 </CardTitle>
                 <CardDescription>
-                    Provide text, an idea, or any artifact for the council to review. The agents will analyze it based on the Covenant principles.
+                    Provide text, an image, or a short video for the council to review. The agents will analyze it based on the Covenant principles.
                 </CardDescription>
             </CardHeader>
             <CardContent>
-              <form ref={formRef} action={formAction} className="space-y-4">
-                <Textarea
-                  name="artifact"
-                  placeholder="Paste your text, idea, or proposal here..."
-                  className="min-h-[200px] text-base"
-                  required
-                />
-                <SubmitButton />
-              </form>
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="text"><FileText className="mr-2"/>Text</TabsTrigger>
+                    <TabsTrigger value="file"><Upload className="mr-2"/>File</TabsTrigger>
+                </TabsList>
+                <form ref={formRef} action={formAction} className="space-y-4 pt-4">
+                  <TabsContent value="text">
+                      <Textarea
+                        name="artifact"
+                        placeholder="Paste your text, idea, or proposal here..."
+                        className="min-h-[200px] text-base"
+                      />
+                  </TabsContent>
+                  <TabsContent value="file">
+                      <Input name="artifactFile" type="file" accept="image/*,video/mp4,video/quicktime" />
+                      <p className="text-sm text-muted-foreground mt-2">Max file size: 10MB. Supported formats: images, MP4, MOV.</p>
+                  </TabsContent>
+                  <SubmitButton />
+                </form>
+              </Tabs>
             </CardContent>
           </Card>
 

@@ -11,7 +11,8 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const GenerateAgentOpinionsInputSchema = z.object({
-  artifact: z.string().describe('The artifact submitted by the user.'),
+  artifact: z.string().describe('The artifact submitted by the user. This can be text, or a data URI for an image or video.'),
+  mimeType: z.string().optional().describe('The MIME type of the artifact, if it is a file.'),
 });
 export type GenerateAgentOpinionsInput = z.infer<typeof GenerateAgentOpinionsInputSchema>;
 
@@ -47,8 +48,9 @@ const agentOpinionPrompt = ai.definePrompt({
   name: 'agentOpinionPrompt',
   input: {
     schema: z.object({
-      artifact: z.string().describe('The artifact submitted by the user.'),
+      artifact: z.string().describe("The artifact submitted by the user. Can be text or a data URI if it's a file."),
       principle: z.string().describe('The Covenant principle embodied by the agent.'),
+      isMedia: z.boolean().describe('Whether the artifact is media or text.'),
     }),
   },
   output: {
@@ -62,7 +64,11 @@ Your guiding principle is: "{{{principle}}}"
 You have been presented with an artifact for your consideration. Please offer your personal opinion on it, speaking in a natural, human-like voice. Your response should be a direct reflection of your unique perspective, shaped by your principle. Avoid formal, robotic language.
 
 Artifact:
+{{#if isMedia}}
+{{media url=artifact}}
+{{else}}
 "{{{artifact}}}"
+{{/if}}
 
 Based on your principle, what is your opinion on this artifact?`,
 });
@@ -91,9 +97,12 @@ const generateAgentOpinionsFlow = ai.defineFlow(
   async input => {
     const opinions = await Promise.all(
       covenantPrinciples.map(async principle => {
+        const isMedia = input.mimeType?.startsWith('image/') || input.mimeType?.startsWith('video/');
+        
         const {output} = await agentOpinionPrompt({
           artifact: input.artifact,
           principle,
+          isMedia: !!isMedia,
         });
 
         // Decide whether to use the alignment tool.
