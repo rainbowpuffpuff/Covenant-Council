@@ -1,1 +1,6 @@
-// Flows will be imported for their side effects in this file.
+import { config } from 'dotenv';
+config();
+
+import '@/ai/flows/assess-principle-alignment.ts';
+import '@/ai/flows/generate-agent-opinions.ts';
+import '@/ai/flows/summarize-artifact-for-agents.ts';

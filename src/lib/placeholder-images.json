@@ -1,3 +1,70 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "human-tech",
+      "description": "Abstract representation of humanistic technology",
+      "imageUrl": "https://images.unsplash.com/photo-1761075665827-bf5282094678?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmdXR1cmlzdGljJTIwdGVjaG5vbG9neSUyMGh1bWFufGVufDB8fHx8MTc2MzExMzI5NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "futuristic technology human"
+    },
+    {
+      "id": "principle-personhood",
+      "description": "Image for Universal Personhood",
+      "imageUrl": "https://images.unsplash.com/photo-1611330500121-d9439ddc3d9d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxpZGVudGl0eSUyMGZpbmdlcnByaW50fGVufDB8fHx8MTc2MzExMzI5NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "identity fingerprint"
+    },
+    {
+      "id": "principle-ownership",
+      "description": "Image for Inalienable Ownership",
+      "imageUrl": "https://images.unsplash.com/flagged/photo-1552911942-1f6cea756cf0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxkaWdpdGFsJTIwa2V5fGVufDB8fHx8MTc2MzExMzI5NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "digital key"
+    },
+    {
+      "id": "principle-privacy",
+      "description": "Image for Privacy by Default",
+      "imageUrl": "https://images.unsplash.com/photo-1480160734175-e2209654433c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwcml2YWN5JTIwc2hpZWxkfGVufDB8fHx8MTc2MzA2MTk3MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "privacy shield"
+    },
+    {
+      "id": "principle-information",
+      "description": "Image for Free flow of Information",
+      "imageUrl": "https://images.unsplash.com/photo-1761039232971-bb55a290762c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxpbmZvcm1hdGlvbiUyMG5ldHdvcmt8ZW58MHx8fHwxNzYzMTEzMjk0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "information network"
+    },
+    {
+      "id": "principle-capital",
+      "description": "Image for Free flow of Capital",
+      "imageUrl": "https://images.unsplash.com/photo-1635236190542-d43e4d4b9e4b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmaW5hbmNpYWwlMjBncmFwaHxlbnwwfHx8fDE3NjMxMTMyOTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "financial graph"
+    },
+    {
+      "id": "principle-public-goods",
+      "description": "Image for Capital Serves Public Goods",
+      "imageUrl": "https://images.unsplash.com/photo-1758304480905-9239a50753a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21tdW5pdHklMjBncm93dGh8ZW58MHx8fHwxNzYzMTEzMjk0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "community growth"
+    },
+    {
+      "id": "principle-security",
+      "description": "Image for Universal Security",
+      "imageUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjeWJlciUyMHNlY3VyaXR5fGVufDB8fHx8MTc2MzA1MzU2Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cyber security"
+    },
+    {
+      "id": "principle-accountability",
+      "description": "Image for Voluntary Accountability",
+      "imageUrl": "https://images.unsplash.com/photo-1559489433-3445e4953bdf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxiYWxhbmNlJTIwc2NhbGVzfGVufDB8fHx8MTc2MzExMzI5NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "balance scales"
+    },
+    {
+      "id": "principle-earth",
+      "description": "Image for Earth Public Goods",
+      "imageUrl": "https://images.unsplash.com/photo-1700666977700-e1fcdb803237?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxuYXR1cmUlMjB0ZWNobm9sb2d5fGVufDB8fHx8MTc2MzEwMjExOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "nature technology"
+    },
+    {
+      "id": "principle-resilience",
+      "description": "Image for A Covenant of Adaptive Resilience",
+      "imageUrl": "https://images.unsplash.com/photo-1654761147673-58d10d552c1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxkZWNlbnRyYWxpemVkJTIwbmV0d29ya3xlbnwwfHx8fDE3NjMxMTMyOTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "decentralized network"
+    }
+  ]
 }
