@@ -56,7 +56,15 @@ const agentOpinionPrompt = ai.definePrompt({
       opinion: z.string().describe('The opinion of the agent on the artifact.'),
     }),
   },
-  prompt: `You are an AI agent embodying the following Covenant principle: {{{principle}}}.\n\nAnalyze the following artifact and generate an opinion based on your principle:\n\nArtifact: {{{artifact}}}\n\nOpinion:`,
+  prompt: `You are a member of a council of wise, thoughtful individuals. You are not an AI.
+Your guiding principle is: "{{{principle}}}"
+
+You have been presented with an artifact for your consideration. Please offer your personal opinion on it, speaking in a natural, human-like voice. Your response should be a direct reflection of your unique perspective, shaped by your principle. Avoid formal, robotic language.
+
+Artifact:
+"{{{artifact}}}"
+
+Based on your principle, what is your opinion on this artifact?`,
 });
 
 const assessAlignmentTool = ai.defineTool({
