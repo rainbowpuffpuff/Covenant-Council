@@ -4,7 +4,7 @@ import { principles } from '@/lib/covenant';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, PenSquare } from 'lucide-react';
 import Header from '@/components/app/header';
 
 export default function Home() {
@@ -31,6 +31,11 @@ export default function Home() {
                     <Link href="/council">
                       Enter the Council <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
+                  </Button>
+                  <Button asChild size="lg" variant="secondary">
+                    <a href="https://manifest.human.tech/manifesto" target="_blank" rel="noopener noreferrer">
+                      Sign the Manifesto <PenSquare className="ml-2 h-4 w-4" />
+                    </a>
                   </Button>
                 </div>
               </div>
