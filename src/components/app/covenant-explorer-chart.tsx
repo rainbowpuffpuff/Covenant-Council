@@ -25,7 +25,34 @@ const chartConfig = {
   security: { label: 'Security', color: 'hsl(var(--chart-5))' },
 };
 
-export function CovenantExplorerChart() {
+interface CovenantExplorerChartProps {
+  onPrincipleClick: (principle: string) => void;
+}
+
+const CustomTick = (props: any) => {
+  const { x, y, payload, onPrincipleClick } = props;
+  const handleClick = () => {
+    onPrincipleClick(payload.value);
+  };
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="middle"
+        fill="hsl(var(--foreground))"
+        className="text-sm cursor-pointer hover:font-bold hover:text-primary transition-all"
+        onClick={handleClick}
+      >
+        {payload.value}
+      </text>
+    </g>
+  );
+};
+
+
+export function CovenantExplorerChart({ onPrincipleClick }: CovenantExplorerChartProps) {
   return (
     <ChartContainer
       config={chartConfig}
@@ -36,7 +63,7 @@ export function CovenantExplorerChart() {
           cursor={false}
           content={<ChartTooltipContent indicator="line" />}
         />
-        <PolarAngleAxis dataKey="principle" />
+        <PolarAngleAxis dataKey="principle" tick={<CustomTick onPrincipleClick={onPrincipleClick} />} />
         <PolarRadiusAxis angle={30} domain={[0, 100]} />
         <PolarGrid />
         {dimensions.map((dim) => (
