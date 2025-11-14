@@ -1,14 +1,26 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { principles } from '@/lib/covenant';
+import { principles, type Principle } from '@/lib/covenant';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { ArrowRight, PenSquare, Share2 } from 'lucide-react';
 import Header from '@/components/app/header';
+import { PrincipleDetails } from '@/components/app/principle-details';
 
 export default function Home() {
-  const getImage = (id: string) => PlaceHolderImages.find((img) => img.id === id);
+  const getImage = (id: string) =>
+    PlaceHolderImages.find((img) => img.id === id);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -23,7 +35,10 @@ export default function Home() {
                     The Covenant Council
                   </h1>
                   <p className="max-w-[600px] text-foreground/90 md:text-xl mx-auto lg:mx-0">
-                    Submit an artifact to a council of 10 AI agents, each embodying a principle of Human Tech. The council will analyze your submission and provide a multi-faceted deliberation on its ethical and societal implications.
+                    Submit an artifact to a council of 10 AI agents, each
+                    embodying a principle of Human Tech. The council will
+                    analyze your submission and provide a multi-faceted
+                    deliberation on its ethical and societal implications.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center lg:justify-start">
@@ -32,14 +47,19 @@ export default function Home() {
                       Enter the Council <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
-                   <Button asChild size="lg" variant="secondary">
+                  <Button asChild size="lg" variant="secondary">
                     <Link href="/covenant-explorer">
                       Explore the Covenant <Share2 className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline">
-                    <a href="https://manifest.human.tech/manifesto" target="_blank" rel="noopener noreferrer">
-                      Sign the Manifesto <PenSquare className="ml-2 h-4 w-4" />
+                    <a
+                      href="https://manifest.human.tech/manifesto"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Sign the Manifesto{' '}
+                      <PenSquare className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
                 </div>
@@ -56,47 +76,72 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="principles" className="w-full py-12 md:py-24 lg:py-32 bg-secondary/50">
+        <section
+          id="principles"
+          className="w-full py-12 md:py-24 lg:py-32 bg-secondary/50"
+        >
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">The Principles</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">
+                  The Principles
+                </h2>
                 <p className="max-w-[900px] text-foreground/80 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  To unify collective alignment efforts, we enter into a Covenant of Humanistic Technologies, grounded in principles we hold self-evident.
+                  To unify collective alignment efforts, we enter into a
+                  Covenant of Humanistic Technologies, grounded in principles we
+                  hold self-evident. Click on any principle to explore its
+                  promise and its peril.
                 </p>
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-start gap-8 py-12 sm:grid-cols-2 md:gap-12 lg:max-w-none lg:grid-cols-3">
               {principles.map((principle) => (
-                <Card key={principle.id} className="h-full">
-                  <CardHeader className="flex flex-row items-center gap-4">
-                    <principle.icon className="h-8 w-8 text-primary" />
-                    <CardTitle className="font-headline">{principle.shortTitle}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <p className="font-semibold">{principle.title.split(': ')[1]}</p>
-                    <p className="text-sm text-foreground/80">{principle.description}</p>
-                    {principle.imageId && (
-                      <div className="pt-4">
-                         <Image
-                            src={getImage(principle.imageId)?.imageUrl || ''}
-                            width={400}
-                            height={250}
-                            alt={principle.shortTitle}
-                            data-ai-hint={getImage(principle.imageId)?.imageHint || ''}
-                            className="rounded-lg object-cover w-full aspect-video"
-                         />
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                <Dialog key={principle.id}>
+                  <DialogTrigger asChild>
+                    <Card className="h-full hover:bg-card/90 hover:cursor-pointer transition-colors">
+                      <CardHeader className="flex flex-row items-center gap-4">
+                        <principle.icon className="h-8 w-8 text-primary" />
+                        <CardTitle className="font-headline">
+                          {principle.shortTitle}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <p className="font-semibold">
+                          {principle.title.split(': ')[1]}
+                        </p>
+                        <p className="text-sm text-foreground/80">
+                          {principle.description}
+                        </p>
+                        {principle.imageId && (
+                          <div className="pt-4">
+                            <Image
+                              src={getImage(principle.imageId)?.imageUrl || ''}
+                              width={400}
+                              height={250}
+                              alt={principle.shortTitle}
+                              data-ai-hint={
+                                getImage(principle.imageId)?.imageHint || ''
+                              }
+                              className="rounded-lg object-cover w-full aspect-video"
+                            />
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-3xl">
+                    <PrincipleDetails principle={principle} />
+                  </DialogContent>
+                </Dialog>
               ))}
             </div>
           </div>
         </section>
       </main>
       <footer className="flex items-center justify-center w-full h-16 border-t">
-        <p className="text-xs text-muted-foreground">&copy; 2025 Covenant Council. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground">
+          &copy; 2025 Covenant Council. All rights reserved.
+        </p>
       </footer>
     </div>
   );
