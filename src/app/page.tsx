@@ -65,7 +65,7 @@ export default function Home() {
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <p className="font-semibold">{principle.title.split(': ')[1]}</p>
-                    <p className="text-sm text-muted-foreground">{principle.description}</p>
+                    <p className="text-sm text-foreground/80">{principle.description}</p>
                     {principle.imageId && (
                       <div className="pt-4">
                          <Image

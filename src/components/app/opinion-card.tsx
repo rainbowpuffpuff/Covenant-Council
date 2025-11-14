@@ -31,7 +31,7 @@ export function OpinionCard({
           </div>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="prose prose-sm dark:prose-invert max-w-none px-2 text-muted-foreground">
+      <AccordionContent className="prose prose-sm dark:prose-invert max-w-none px-2 text-foreground/80">
         <p>{opinion}</p>
         {isEstimate && <p className="text-xs italic mt-2">Alignment score is an estimate.</p>}
       </AccordionContent>
