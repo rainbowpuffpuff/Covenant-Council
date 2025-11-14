@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useRef, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Loader2, Send, Wand2, Bot } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -40,7 +40,7 @@ const initialState: FormState = {
 };
 
 export default function CouncilPage() {
-  const [state, formAction] = useFormState(processArtifact, initialState);
+  const [state, formAction] = useActionState(processArtifact, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
   
