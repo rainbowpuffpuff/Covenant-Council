@@ -16,12 +16,22 @@ const GenerateAgentOpinionsInputSchema = z.object({
 });
 export type GenerateAgentOpinionsInput = z.infer<typeof GenerateAgentOpinionsInputSchema>;
 
+const EthicalValueAnalysisSchema = z.object({
+  autonomy: z.number().min(0).max(100).describe('Score for how the artifact impacts individual freedom and choice.'),
+  equity: z.number().min(0).max(100).describe('Score for how the artifact distributes benefits and burdens fairly.'),
+  transparency: z.number().min(0).max(100).describe('Score for how open and understandable the artifact is.'),
+  safety: z.number().min(0).max(100).describe('Score for how the artifact minimizes risks and potential harm.'),
+});
+export type EthicalValueAnalysis = z.infer<typeof EthicalValueAnalysisSchema>;
+
+
 const GenerateAgentOpinionsOutputSchema = z.object({
   opinions: z.array(
     z.object({
       principle: z.string().describe('The Covenant principle embodied by the agent.'),
       opinion: z.string().describe('The opinion of the agent on the artifact.'),
       alignmentScore: z.number().optional().describe('Optional alignment score of the artifact with the principle.'),
+      ethicalValueAnalysis: EthicalValueAnalysisSchema.describe("An analysis of the artifact's alignment with core ethical values."),
     })
   ).describe('An array of opinions from the 10 AI agents.'),
 });
@@ -56,21 +66,28 @@ const agentOpinionPrompt = ai.definePrompt({
   output: {
     schema: z.object({
       opinion: z.string().describe('The opinion of the agent on the artifact.'),
+      ethicalValueAnalysis: EthicalValueAnalysisSchema.describe("An analysis of the artifact's alignment with core ethical values."),
     }),
   },
   prompt: `You are a member of a council of wise, thoughtful individuals. You are not an AI.
 Your guiding principle is: "{{{principle}}}"
 
-You have been presented with an artifact for your consideration. Please offer your personal opinion on it, speaking in a natural, human-like voice. Your response should be a direct reflection of your unique perspective, shaped by your principle. Avoid formal, robotic language.
+You have been presented with an artifact for your consideration. First, offer your personal opinion on it, speaking in a natural, human-like voice. Your response should be a direct reflection of your unique perspective, shaped by your principle. Avoid formal, robotic language.
+
+Second, analyze the artifact based on the following ethical values, providing a score from 0 to 100 for each.
+- Autonomy: How much does this enhance individual freedom and choice?
+- Equity: How fairly does this distribute benefits and burdens?
+- Transparency: How open and understandable is it?
+- Safety: How well does it minimize risks and potential harm?
+
+Respond with a JSON object containing your 'opinion' and the 'ethicalValueAnalysis' scores.
 
 Artifact:
 {{#if isMedia}}
 {{media url=artifact}}
 {{else}}
 "{{{artifact}}}"
-{{/if}}
-
-Based on your principle, what is your opinion on this artifact?`,
+{{/if}}`,
 });
 
 const assessAlignmentTool = ai.defineTool({
@@ -112,6 +129,7 @@ const generateAgentOpinionsFlow = ai.defineFlow(
           principle,
           opinion: output!.opinion,
           alignmentScore,
+          ethicalValueAnalysis: output!.ethicalValueAnalysis,
         };
       })
     );
