@@ -6,6 +6,7 @@ import {
 import { Progress } from '@/components/ui/progress';
 import { type Principle } from '@/lib/covenant';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 interface OpinionCardProps {
   principle: Principle;
@@ -38,11 +39,11 @@ export function OpinionCard({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div className="rounded-lg border p-4">
                 <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsUp className="h-5 w-5 text-green-500"/> Rationale</h4>
-                <p>{rationale}</p>
+                <ReactMarkdown>{rationale}</ReactMarkdown>
             </div>
             <div className="rounded-lg border p-4">
                 <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsDown className="h-5 w-5 text-red-500"/> Constructive Feedback</h4>
-                <p>{constructiveFeedback}</p>
+                <ReactMarkdown>{constructiveFeedback}</ReactMarkdown>
             </div>
         </div>
       </AccordionContent>
