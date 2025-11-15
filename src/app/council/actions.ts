@@ -37,6 +37,14 @@ const artifactSchema = z.object({
                 path: ['file'],
             });
         }
+        // Remove video type check
+        if (!data.file!.type.startsWith('image/')) {
+             ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: 'Only image files are supported.',
+                path: ['file'],
+            });
+        }
     }
     
     if (hasText) {

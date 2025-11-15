@@ -84,7 +84,7 @@ export default function CouncilPage() {
                     <span>Submit your Artifact</span>
                 </CardTitle>
                 <CardDescription>
-                    Provide text, an image, or a short video for the council to review. The agents will analyze it based on the Covenant principles.
+                    Provide text or an image for the council to review. The agents will analyze it based on the Covenant principles.
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -102,8 +102,8 @@ export default function CouncilPage() {
                       />
                   </TabsContent>
                   <TabsContent value="file">
-                      <Input name="artifactFile" type="file" accept="image/*,video/mp4,video/quicktime" />
-                      <p className="text-sm text-muted-foreground mt-2">Max file size: 10MB. Supported formats: images, MP4, MOV.</p>
+                      <Input name="artifactFile" type="file" accept="image/*" />
+                      <p className="text-sm text-muted-foreground mt-2">Max file size: 10MB. Supported formats: images.</p>
                   </TabsContent>
                   <SubmitButton />
                 </form>

@@ -6,14 +6,14 @@ This project was bootstrapped with [Firebase Studio](https://firebase.google.com
 
 ## What It Is
 
-The Covenant Council is a Next.js web application that simulates a council of ten distinct AI agents. Each agent embodies a core principle from the Covenant of Humanistic Technologies. Users can submit "artifacts"—pieces of text, images, or short videos—to the Council for deliberation.
+The Covenant Council is a Next.js web application that simulates a council of ten distinct AI agents. Each agent embodies a core principle from the Covenant of Humanistic Technologies. Users can submit "artifacts"—pieces of text, or images—to the Council for deliberation.
 
 The application is designed to be a tool for thought and discussion. It provides a unique interface to engage with complex ethical questions about technology, innovation, and society.
 
 ### Core Features
 
 *   **AI Agent Council:** Ten AI agents powered by Google's Gemini model via Genkit, each with a unique persona shaped by a guiding principle.
-*   **Artifact Submission:** Users can submit text, images, or videos (under 10MB) for analysis.
+*   **Artifact Submission:** Users can submit text or images (under 10MB) for analysis.
 *   **Multi-Faceted Analysis:** For each artifact, the Council provides:
     *   A **nuanced opinion** from each agent's perspective.
     *   **Positive (Utopian)** and **Negative (Dystopian)** analyses.
@@ -37,6 +37,6 @@ This project is intended as a **deliberative tool** and a **creative medium** fo
 
 ## Overall, is a functional software tool that makes the artifacts submitted on human.tech verifiable through the lens of the Covenant principles. It minimizes user friction
 
-# It uses a council of 10 specialized AI agents to analyze any submission—text, image, or video—against the 10 core principles. The output is a visual "Covenant Alignment Map" and detailed feedback from each agent, providing an instant, data-driven analysis of philosophical alignment.
+# It uses a council of 10 specialized AI agents to analyze any submission—text or image—against the 10 core principles. The output is a visual "Covenant Alignment Map" and detailed feedback from each agent, providing an instant, data-driven analysis of philosophical alignment.
 
 # This tool operationalizes the Covenant for both curators and creators. It is a Tier 3 proposal designed to become a core part of the submission process, offering immediate, scalable feedback to the ecosystem. 
