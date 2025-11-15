@@ -38,17 +38,17 @@ export function OpinionCard({
       <AccordionContent className="prose prose-sm dark:prose-invert max-w-none px-2 text-foreground/80">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div className="rounded-lg border p-4">
-                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsUp className="h-5 w-5 text-green-500"/> Rationale</h4>
+                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2 not-prose"><ThumbsUp className="h-5 w-5 text-green-500"/> Rationale</h4>
                 <ReactMarkdown>{rationale}</ReactMarkdown>
             </div>
             <div className="rounded-lg border p-4">
-                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ThumbsDown className="h-5 w-5 text-red-500"/> Constructive Feedback</h4>
+                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2 not-prose"><ThumbsDown className="h-5 w-5 text-red-500"/> Constructive Feedback</h4>
                 <ReactMarkdown>{constructiveFeedback}</ReactMarkdown>
             </div>
         </div>
         {principle.assessmentCriteria && (
             <div className="rounded-lg border p-4 mt-4">
-                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ListChecks className="h-5 w-5 text-blue-500"/> Assessment Criteria</h4>
+                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2 not-prose"><ListChecks className="h-5 w-5 text-blue-500"/> Assessment Criteria</h4>
                 <ul className="list-disc pl-5 space-y-1">
                     {principle.assessmentCriteria.map((criterion, index) => (
                         <li key={index}>{criterion}</li>
