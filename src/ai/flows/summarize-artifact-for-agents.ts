@@ -11,6 +11,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { Part } from '@genkit-ai/google-genai';
 
 const SummarizeArtifactInputSchema = z.object({
   artifact: z.string().describe('The artifact to summarize, which could be text or a data URI of a file.'),
@@ -29,20 +30,9 @@ export async function summarizeArtifact(input: SummarizeArtifactInput): Promise<
 
 const summarizeArtifactPrompt = ai.definePrompt({
   name: 'summarizeArtifactPrompt',
-  input: {schema: z.object({
-    artifact: z.string(),
-    isMedia: z.boolean(),
-  })},
+  input: {schema: z.custom<Part[]>()},
   output: {schema: SummarizeArtifactOutputSchema},
-  prompt: `
-{{#if isMedia}}
-Analyze the following image in detail. Describe the key elements, composition, mood, and any potential symbolic meaning. Provide a rich, descriptive text that can be used by other AI agents to understand the core concepts of the artifact.
-Image: {{media url=artifact}}
-{{else}}
-Summarize the following artifact into a concise summary that captures the main points. The summary should be detailed enough for other AI agents to perform a thorough analysis of its concepts.
-Artifact: {{{artifact}}}
-{{/if}}
-`,
+  prompt: `{{{prompt}}}`,
 });
 
 const summarizeArtifactFlow = ai.defineFlow(
@@ -53,10 +43,20 @@ const summarizeArtifactFlow = ai.defineFlow(
   },
   async input => {
     const isMedia = !!input.mimeType?.startsWith('image/');
-    const {output} = await summarizeArtifactPrompt({
-        artifact: input.artifact,
-        isMedia,
-    });
+    let prompt: Part[];
+
+    if (isMedia) {
+        prompt = [
+            {text: "Analyze the following image in detail. Describe the key elements, composition, mood, and any potential symbolic meaning. Provide a rich, descriptive text that can be used by other AI agents to understand the core concepts of the artifact."},
+            {media: {url: input.artifact, contentType: input.mimeType}}
+        ];
+    } else {
+        prompt = [
+            {text: `Summarize the following artifact into a concise summary that captures the main points. The summary should be detailed enough for other AI agents to perform a thorough analysis of its concepts.\nArtifact: ${input.artifact}`}
+        ];
+    }
+    
+    const {output} = await summarizeArtifactPrompt(prompt);
     return output!;
   }
 );
