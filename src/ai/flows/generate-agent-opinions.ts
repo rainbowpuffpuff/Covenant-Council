@@ -53,11 +53,11 @@ const agentOpinionPrompt = ai.definePrompt({
     output: {
         schema: z.object({
             alignmentScore: z.number().min(0).max(10).describe('An alignment score from 0-10.'),
-            rationale: z.string().describe('A concise explanation of your score, referencing the 4 assessment points.'),
-            constructiveFeedback: z.string().describe('Specific suggestions on how the submission could be modified to better align with the principle.'),
+            rationale: z.string().describe('A concise explanation for the score, formatted as a markdown bulleted list, referencing the 4 assessment points.'),
+            constructiveFeedback: z.string().describe('Specific suggestions on how the submission could be modified to better align with the principle, formatted as a markdown numbered list.'),
         }),
     },
-    system: `{{{systemPrompt}}}`,
+    system: '{{{systemPrompt}}}',
     prompt: `The user has provided the following artifact for analysis.
 Artifact:
 "{{{artifact}}}"
