@@ -30,7 +30,7 @@ export async function summarizeArtifact(input: SummarizeArtifactInput): Promise<
 
 const summarizeArtifactPrompt = ai.definePrompt({
   name: 'summarizeArtifactPrompt',
-  input: {schema: z.custom<Part[]>()},
+  input: {schema: z.any()},
   output: {schema: SummarizeArtifactOutputSchema},
   prompt: `{{{prompt}}}`,
 });
@@ -43,20 +43,26 @@ const summarizeArtifactFlow = ai.defineFlow(
   },
   async input => {
     const isMedia = !!input.mimeType?.startsWith('image/');
-    let prompt: Part[];
+    let promptParts: Part[];
 
     if (isMedia) {
-        prompt = [
+        promptParts = [
             {text: "Analyze the following image in detail. Describe the key elements, composition, mood, and any potential symbolic meaning. Provide a rich, descriptive text that can be used by other AI agents to understand the core concepts of the artifact."},
             {media: {url: input.artifact, contentType: input.mimeType}}
         ];
     } else {
-        prompt = [
+        promptParts = [
             {text: `Summarize the following artifact into a concise summary that captures the main points. The summary should be detailed enough for other AI agents to perform a thorough analysis of its concepts.\nArtifact: ${input.artifact}`}
         ];
     }
     
-    const {output} = await summarizeArtifactPrompt(prompt);
+    const {output} = await ai.generate({
+        prompt: promptParts,
+        model: 'googleai/gemini-2.5-flash',
+        output: {
+            schema: SummarizeArtifactOutputSchema,
+        },
+    });
     return output!;
   }
 );
