@@ -57,12 +57,12 @@ const agentOpinionPrompt = ai.definePrompt({
             constructiveFeedback: z.string().describe('Specific suggestions on how the submission could be modified to better align with the principle.'),
         }),
     },
-    system: `{{{systemPrompt}}}
-
-The user has provided the following artifact for analysis.
+    system: `{{{systemPrompt}}}`,
+    prompt: `The user has provided the following artifact for analysis.
 Artifact:
-"{{{artifact}}}"`,
-    prompt: `Provide your analysis based on the artifact. Respond with a JSON object containing 'alignmentScore', 'rationale', and 'constructiveFeedback'. The alignment score must be a number between 0 and 10.`
+"{{{artifact}}}"
+
+Provide your analysis based on the artifact. Respond with a JSON object containing 'alignmentScore', 'rationale', and 'constructiveFeedback'. The alignment score must be a number between 0 and 10.`
 });
 
 const generateAgentOpinionsFlow = ai.defineFlow(
