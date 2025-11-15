@@ -1,6 +1,7 @@
 'use server';
 
 import { generateAgentOpinions, type GenerateAgentOpinionsOutput } from '@/ai/flows/generate-agent-opinions';
+import { summarizeArtifact } from '@/ai/flows/summarize-artifact-for-agents';
 import { z } from 'zod';
 
 const MAX_FILE_SIZE_MB = 10;
@@ -91,15 +92,20 @@ export async function processArtifact(
   }
   
   try {
-    let opinions;
     const { file, text } = validatedArtifact.data;
+    let artifactToAnalyze: string;
+    let artifactMimeType: string | undefined;
 
     if (file && file.size > 0) {
         const buffer = await file.arrayBuffer();
         const dataUri = toDataURI(buffer, file.type);
-        opinions = await generateAgentOpinions({ artifact: dataUri, mimeType: file.type });
+        // First, get a description of the image.
+        const { summary } = await summarizeArtifact({ artifact: dataUri, mimeType: file.type });
+        artifactToAnalyze = summary;
+        artifactMimeType = 'text/plain'; // Now we are sending text to the agents
     } else if (text) {
-        opinions = await generateAgentOpinions({ artifact: text });
+        artifactToAnalyze = text;
+        artifactMimeType = 'text/plain';
     } else {
         // This case should not be reached due to validation, but as a fallback:
         return {
@@ -108,6 +114,9 @@ export async function processArtifact(
             timestamp: Date.now(),
         };
     }
+    
+    // Now, send the text-based artifact to the agents.
+    const opinions = await generateAgentOpinions({ artifact: artifactToAnalyze, mimeType: artifactMimeType });
 
     return { opinions, error: null, timestamp: Date.now() };
   } catch (e) {
