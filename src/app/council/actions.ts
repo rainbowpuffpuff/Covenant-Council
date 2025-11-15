@@ -37,7 +37,6 @@ const artifactSchema = z.object({
                 path: ['file'],
             });
         }
-        // Remove video type check
         if (!data.file!.type.startsWith('image/')) {
              ctx.addIssue({
                 code: z.ZodIssueCode.custom,
@@ -102,7 +101,6 @@ export async function processArtifact(
   try {
     const { file, text } = validatedArtifact.data;
     let artifactToAnalyze: string;
-    let artifactMimeType: string | undefined;
 
     if (file && file.size > 0) {
         const buffer = await file.arrayBuffer();
@@ -110,10 +108,8 @@ export async function processArtifact(
         // First, get a description of the image.
         const { summary } = await summarizeArtifact({ artifact: dataUri, mimeType: file.type });
         artifactToAnalyze = summary;
-        artifactMimeType = 'text/plain'; // Now we are sending text to the agents
     } else if (text) {
         artifactToAnalyze = text;
-        artifactMimeType = 'text/plain';
     } else {
         // This case should not be reached due to validation, but as a fallback:
         return {
@@ -124,7 +120,7 @@ export async function processArtifact(
     }
     
     // Now, send the text-based artifact to the agents.
-    const opinions = await generateAgentOpinions({ artifact: artifactToAnalyze, mimeType: artifactMimeType });
+    const opinions = await generateAgentOpinions({ artifact: artifactToAnalyze });
 
     return { opinions, error: null, timestamp: Date.now() };
   } catch (e) {

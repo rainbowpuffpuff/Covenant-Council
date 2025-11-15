@@ -12,8 +12,7 @@ import {z} from 'genkit';
 import { principles } from '@/lib/covenant';
 
 const GenerateAgentOpinionsInputSchema = z.object({
-  artifact: z.string().describe('The artifact submitted by the user. This can be text, or a data URI for an image or video.'),
-  mimeType: z.string().optional().describe('The MIME type of the artifact, if it is a file.'),
+  artifact: z.string().describe('The artifact submitted by the user, as text.'),
 });
 export type GenerateAgentOpinionsInput = z.infer<typeof GenerateAgentOpinionsInputSchema>;
 
@@ -47,8 +46,7 @@ const agentOpinionPrompt = ai.definePrompt({
     name: 'agentOpinionPrompt',
     input: {
         schema: z.object({
-            artifact: z.string().describe("The artifact submitted by the user. Can be text or a data URI if it's a file."),
-            isMedia: z.boolean().describe('Whether the artifact is media or text.'),
+            artifact: z.string().describe("The text artifact submitted by the user."),
             systemPrompt: z.string().describe('The detailed system prompt for the specific jury member.'),
         }),
     },
@@ -63,11 +61,7 @@ const agentOpinionPrompt = ai.definePrompt({
 
 The user has provided the following artifact for analysis.
 Artifact:
-{{#if isMedia}}
-{{media url=artifact}}
-{{else}}
-"{{{artifact}}}"
-{{/if}}`,
+"{{{artifact}}}"`,
     prompt: `Provide your analysis based on the artifact. Respond with a JSON object containing 'alignmentScore', 'rationale', and 'constructiveFeedback'. The alignment score must be a number between 0 and 10.`
 });
 
@@ -80,11 +74,8 @@ const generateAgentOpinionsFlow = ai.defineFlow(
   async input => {
     const opinions = await Promise.all(
       juryPrompts.map(async jury => {
-        const isMedia = input.mimeType?.startsWith('image/') || input.mimeType?.startsWith('video/');
-        
         const {output} = await agentOpinionPrompt({
           artifact: input.artifact,
-          isMedia: !!isMedia,
           systemPrompt: jury.systemPrompt,
         });
 
