@@ -5,7 +5,7 @@ import {
 } from '@/components/ui/accordion';
 import { Progress } from '@/components/ui/progress';
 import { type Principle } from '@/lib/covenant';
-import { ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, ListChecks } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 interface OpinionCardProps {
@@ -46,6 +46,16 @@ export function OpinionCard({
                 <ReactMarkdown>{constructiveFeedback}</ReactMarkdown>
             </div>
         </div>
+        {principle.assessmentCriteria && (
+            <div className="rounded-lg border p-4 mt-4">
+                <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><ListChecks className="h-5 w-5 text-blue-500"/> Assessment Criteria</h4>
+                <ul className="list-disc pl-5 space-y-1">
+                    {principle.assessmentCriteria.map((criterion, index) => (
+                        <li key={index}>{criterion}</li>
+                    ))}
+                </ul>
+            </div>
+        )}
       </AccordionContent>
     </AccordionItem>
   );
